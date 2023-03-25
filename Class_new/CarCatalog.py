@@ -1,5 +1,4 @@
 class CarCatalog:
-    def __init__(self):
-        self.carlists=[]
-    def add_car_list(self,car):
-        self.carlists.append(car)
+    def __init__(self,car_list:list):
+        self._car_lists=car_list
+    
