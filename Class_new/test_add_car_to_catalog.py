@@ -44,7 +44,7 @@ carc = Car("toyota",
         "-",
         "ABV-467",
         [],
-        [])
+        [1,2,3,4,5])
 
 testalog = CarCatalog([cara, carb])
 future.add_car(carc,testalog)
