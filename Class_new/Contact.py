@@ -1,4 +1,5 @@
 from CarCatalog import CarCatalog
+from Favourite import FavouriteCar
 class Contact:
     def __init__(self,contact_name,contact_username,contact_phone_num,contact_password,contact_email):
         self._contact_name= contact_name
@@ -16,7 +17,15 @@ class Owner(Contact):
 class Renter(Contact):
     def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
         super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
-        
+    def add_fav_car(self,car,car_favourite:FavouriteCar):
+        car_favourite._car_favourite_list.append(car)
+    def watch_fav_car(self,car_favourite:FavouriteCar):
+        for car in car_favourite._car_favourite_list:
+            print(car._car_brand)
+            print(car._car_model)
+            print(car._date_avalible)
+    def add_time(self):
+        pass
 petch = Renter("petch",
                "petchza555",
                "0930036621",

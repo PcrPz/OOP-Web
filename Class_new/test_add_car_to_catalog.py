@@ -16,7 +16,7 @@ cara = Car("Bmw",
         "2seat",
         "3Day-200usd",
         "-",
-        "ABV-467",
+        "ABV-555",
         [],
         [])
 carb = Car("Ferrari",
@@ -29,7 +29,7 @@ carb = Car("Ferrari",
         "2seat",
         "3Day-200usd",
         "-",
-        "ABV-467",
+        "ABV-444",
         [],
         [])
 carc = Car("toyota",
@@ -49,4 +49,4 @@ carc = Car("toyota",
 testalog = CarCatalog([cara, carb])
 future.add_car(carc,testalog)
 
-print(testalog)
+print(testalog._car_lists)
