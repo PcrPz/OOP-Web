@@ -56,6 +56,8 @@ class Renter(Contact):
             self._contact_password = new_password
         if isinstance(new_email, str):
             self._contact_email = new_email
+    def search_car(self,):
+        pass
             
             
 petch = Renter("petch",
