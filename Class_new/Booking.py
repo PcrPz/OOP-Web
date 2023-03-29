@@ -1,5 +1,6 @@
+import datetime
 class Booking:
-    def __init__(self,amount,day_start,day_end):
-        self.__amount = amount
-        self.__day_start = day_start
-        self.__day_end = day_end
+    def __init__(self,price,day_start,range):
+        self._price = price
+        self._day_start = day_start
+        self._day_end = day_start + datetime.timedelta(range-1)

@@ -1,5 +1,6 @@
 from CarCatalog import CarCatalog
 from Favourite import FavouriteCar
+import datetime
 class Contact:
     def __init__(self,contact_name,contact_username,contact_phone_num,contact_password,contact_email):
         self._contact_name= contact_name
@@ -24,8 +25,14 @@ class Renter(Contact):
             print(car._car_brand)
             print(car._car_model)
             print(car._date_avalible)
-    def add_time(self):
-        pass
+            #โชว์ค่า fav car ออกมา
+    def add_time(self,time_start,amount):
+        self._time_start = time_start
+        self._amount = amount
+        #เเอดเวลาเข้ามา
+    def select_car(self,car):
+        self._choose_car=car
+        #เลือกรถส่งไปที่ booking
 petch = Renter("petch",
                "petchza555",
                "0930036621",
