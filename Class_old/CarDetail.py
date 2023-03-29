@@ -20,4 +20,8 @@ class CarStat(CarDetails):
         self.__date_avalible = date_avalible
         self.__car_available_status = car_available_status
         self.__car_status = car_status
-        
+
+class CarCatalog:
+    def __init__(self,car_brand,model_detail):
+        self.__car_brand = car_brand
+        self.__model_detail = model_detail
