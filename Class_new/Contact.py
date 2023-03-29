@@ -25,12 +25,13 @@ class Renter(Contact):
             print(car._car_brand)
             print(car._car_model)
             print(car._date_avalible)
+            #โชว์ค่า fav car ออกมา
     def add_time(self,time_start,amount):
-        self.time_start = time_start
-        self.amount = amount
+        self._time_start = time_start
+        self._amount = amount
         #เเอดเวลาเข้ามา
     def select_car(self,car):
-        pass
+        self._choose_car=car
         #เลือกรถส่งไปที่ booking
 petch = Renter("petch",
                "petchza555",
