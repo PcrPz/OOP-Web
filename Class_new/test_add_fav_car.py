@@ -1,6 +1,7 @@
-from Class_new.Contact import Renter
-from Class_new.Favourite import FavouriteCar
-from Class_new.Car import Car
+from Contact import Renter
+from Favourite import FavouriteCar
+from Car import Car
+
 
 petch = Renter("petch",
                "petchza555",
@@ -19,7 +20,7 @@ cara = Car("Bmw",
         "3Day-200usd",
         "-",
         "ABV-555",
-        [],
+        "new com",
         [])
 carb = Car("Ferrari",
            "F12",
@@ -32,11 +33,10 @@ carb = Car("Ferrari",
         "3Day-200usd",
         "-",
         "ABV-444",
-        [],
+        "new com",
         [])
 
-petch_fav = FavouriteCar([])
+petch_fav = FavouriteCar()
 petch.add_fav_car(cara,petch_fav)
 petch.add_fav_car(carb,petch_fav)
 petch.watch_fav_car(petch_fav)
-#

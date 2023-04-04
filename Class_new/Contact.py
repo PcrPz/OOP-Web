@@ -12,8 +12,10 @@ class Contact:
 class Owner(Contact):
     def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
         super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
+        
     def add_car(self,car,car_catalog:CarCatalog):
         car_catalog._car_lists.append(car)
+        
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):
             self._contact_name = new_name
@@ -36,15 +38,12 @@ class Renter(Contact):
         for car in car_favourite._car_favourite_list:
             print(car._car_brand)
             print(car._car_model)
-            print(car._date_avalible)
+            print(car._date_not_avalible)
             #โชว์ค่า fav car ออกมา
-    def add_time(self,time_start,amount):
-        self._time_start = time_start
-        self._amount = amount
-        #เเอดเวลาเข้ามา
     def select_car(self,car):
         self._choose_car=car
         #เลือกรถส่งไปที่ booking
+        
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):
             self._contact_name = new_name
