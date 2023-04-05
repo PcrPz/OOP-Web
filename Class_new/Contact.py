@@ -1,4 +1,5 @@
 from CarCatalog import CarCatalog
+from CreditCard import CreditInfo
 from Favourite import FavouriteCar
 import datetime
 class Contact:
@@ -9,6 +10,7 @@ class Contact:
         self._contact_password = contact_password
         self._contact_email = contact_email
         
+        
 class Owner(Contact):
     def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
         super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
@@ -18,6 +20,7 @@ class Owner(Contact):
 class Renter(Contact):
     def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
         super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
+        self._contact_creditInfo = []
     def add_fav_car(self,car,car_favourite:FavouriteCar):
         car_favourite._car_favourite_list.append(car)
     def watch_fav_car(self,car_favourite:FavouriteCar):
@@ -33,11 +36,28 @@ class Renter(Contact):
     def select_car(self,car):
         self._choose_car=car
         #เลือกรถส่งไปที่ booking
+    #def add_credit_card(self,credit_name,creditInfo:CreditInfo):
+        #creditInfo.append(credit_name)
+        #แอด creditInfo
+        
+    #TEST_Credit
+    def modify_creditcard_info(self, creditInfo:CreditInfo, name_on_card, expire_card, card_number, security_credit, card_address):
+        if isinstance(name_on_card, str):
+            creditInfo[0] = name_on_card
+        if isinstance(expire_card, str):
+            creditInfo[1] = expire_card
+        if isinstance(card_number, str):
+            creditInfo[2] = card_number  
+        if isinstance(security_credit, str):
+            creditInfo[3] = security_credit 
+        if isinstance(card_address, str):
+            creditInfo[4] = card_address       
+
 petch = Renter("petch",
                "petchza555",
                "0930036621",
                "Inwpetchza",
-               "petchza@gmail.com")
+               "petchza@gmail.com") 
 
 future = Owner("futurenaja",
                "futureza567",
