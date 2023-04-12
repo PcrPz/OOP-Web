@@ -40,10 +40,6 @@ class Renter(Contact):
             print(car._car_model)
             print(car._date_not_avalible)
             #โชว์ค่า fav car ออกมา
-    def select_car(self,car):
-        self._choose_car=car
-        #เลือกรถส่งไปที่ booking
-        
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):
             self._contact_name = new_name
