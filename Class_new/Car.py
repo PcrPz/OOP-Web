@@ -1,19 +1,19 @@
 class Car():          
     def __init__(self,car_brand,car_model,fuel_type,fuel_used,car_feature,car_door,car_insurance,car_seat,car_amount,car_about,car_plate_number):
-        self._car_brand = car_brand
-        self._car_model = car_model 
-        self._fuel_type= fuel_type
-        self._fuel_used = fuel_used
-        self._car_feature= car_feature
-        self._car_door = car_door
-        self._car_insurance= car_insurance
-        self._car_seat = car_seat
-        self._car_about= car_about
-        self._car_amount= car_amount
-        self._car_plate_number= car_plate_number
-        self._rating_review = []
-        self._date_not_avalible = []
-        self._status_available = True
+        self.__car_brand = car_brand
+        self.__car_model = car_model 
+        self.__fuel_type= fuel_type
+        self.__fuel_used = fuel_used
+        self.__car_feature= car_feature
+        self.__car_door = car_door
+        self.__car_insurance= car_insurance
+        self.__car_seat = car_seat
+        self.__car_about= car_about
+        self.__car_amount= car_amount
+        self.__car_plate_number= car_plate_number
+        self.__rating_review = []
+        self.__date_not_avalible = []
+        self.__status_available = True
 
     def add_interval(self,interval):
         self._date_not_avalible.append(interval)
