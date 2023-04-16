@@ -1,5 +1,8 @@
 class Rating:
-    def __init__(self,review_by,rating_review): 
-        self.__review_by = review_by 
+    def __init__(self,rating_review,rating_comment): 
         self.__rating_review = rating_review
+        self.__rating_comment = rating_comment
+        
+    def get_rating_review (self):
+        return self.__rating_review
     
