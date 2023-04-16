@@ -1,6 +1,6 @@
 from CarCatalog import CarCatalog
-from Favourite import FavouriteCar
 import datetime
+from Car import*
 class Contact:
     def __init__(self,contact_name,contact_username,contact_phone_num,contact_password,contact_email):
         self._contact_name= contact_name
@@ -11,11 +11,7 @@ class Contact:
         
 class Owner(Contact):
     def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
-        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
-        
-    def add_car(self,car,car_catalog:CarCatalog):
-        car_catalog._car_lists.append(car)
-        
+        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)          
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):
             self._contact_name = new_name
@@ -32,13 +28,14 @@ class Owner(Contact):
 class Renter(Contact):
     def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
         super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
-    def add_fav_car(self,car,car_favourite:FavouriteCar):
-        car_favourite._car_favourite_list.append(car)
-    def watch_fav_car(self,car_favourite:FavouriteCar):
-        for car in car_favourite._car_favourite_list:
-            print(car._car_brand)
-            print(car._car_model)
-            print(car._date_not_avalible)
+        self.list_favour=[]
+    def add_fav_car(self,car):
+        self.list_favour.append(car)
+    def watch_fav_car(self):
+        for car in self.list_favour:
+            print(car.get_car_brand())
+            print(car.get_car_model())
+            print(car.get_car_date_not_avalible())
             #โชว์ค่า fav car ออกมา
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):
@@ -51,8 +48,6 @@ class Renter(Contact):
             self._contact_password = new_password
         if isinstance(new_email, str):
             self._contact_email = new_email
-    def search_car(self,):
-        pass
             
             
 petch = Renter("petch",

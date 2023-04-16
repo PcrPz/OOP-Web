@@ -4,5 +4,6 @@ class Payment:
         self.__transaction_id = transaction_id 
         self.__amount = amount 
         self.__card_info = card_info
+        
     def payment(self):
         pass
