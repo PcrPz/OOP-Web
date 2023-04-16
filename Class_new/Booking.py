@@ -1,6 +1,20 @@
 import datetime
+from Favourite import FavouriteCar
+from Interval import Interval
+from Car import Car
 class Booking:
-    def __init__(self,price,day_start,range):
-        self._price = price
-        self._day_start = day_start
-        self._day_end = day_start + datetime.timedelta(range-1)
+    def __init__(self,car:Car,interval:Interval):
+        self.__day_range = interval
+        self.__day_start = self.__day_range.get_end_time()
+        self.__day_end = self.__day_range.get_start_time()
+        self.__price = car.get_car_amount() *(self.__day_start - self.__day_end).days
+        
+ #เเก้คิดเงินหน่อยค้าบ
+    def show_booking(self):
+        print(self.__day_start)
+        print(self.__day_end)
+        print(self.__price)
+
+
+             
+    
