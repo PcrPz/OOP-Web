@@ -7,8 +7,9 @@ from Contact import*
 from Interval import*
 from CarCatalog import*
 from Rating import *
-
+from Signup_Login import *
 from System import *
+from Bookingmanager import *
 app = FastAPI()
 
 bmw =Car("BMW",
@@ -71,7 +72,9 @@ future = Owner("futurenaja",
                "1234",
                "65010671@gmail.com")
 sym = System()
+user_sys = SignupLogin()
 testalog = CarCatalog()
+manager = Bookingmanager()
 testalog.add_car_to_catalog(bmw)
 testalog.add_car_to_catalog(fer)
 testalog.add_car_to_catalog(r35)
@@ -89,19 +92,23 @@ sym.add_user(petch)
 #   "start_time": "9:00",
 #   "end_date": "12-6-2018",
 #   "end_time": "9:59"
-# HOME
 @app.get("/")
-async def home():
-    return {"Future_Car"}
-#Login
-@app.post("/token")
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    status_user= sym.check_user(form_data.username,form_data.password)
-    if not status_user:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-    user = sym.get_user(form_data.username)
-    return {"access_token": user._contact_username, "token_type": "bearer"}
-
+async def root():
+    return {"message": "Hello World"}
+#signup
+@app.post("/signup", tags = ["Signup_Login"])
+async def signup(user: User):
+    if user_sys.add_user(user):
+        return {"message": "Signup successful."}
+    else:
+        return {"message": "Username already taken."}
+#login
+@app.post("/login", tags = ["Signup_Login"])
+async def login(username: str, password: str):
+    if user_sys.is_valid_user(username, password):
+        return {"message": "Login successful."}
+    else:
+        return {"message": "Invalid username or password"}
 
 @app.get("/users/me")
 async def read_users_me(current_user = Depends(sym.get_current_user)):
@@ -179,9 +186,18 @@ async def get_available_car(data: AvalibleDTO):
 
 @app.post("/book_car",tags = ["Booking"])
 async def booking_car(data: BookingDTO):
-    booking =testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time)
+    booking =testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time,data.booked_num)
+    manager.add_booking(booking)
     show_book = booking.show_booking()
     return show_book
+
+@app.post("/cancle_booking",tags = ["Booking"])
+async def cancle_booking(booked_num):
+    for booking in manager.bookings:
+        if booking.booked_num == booked_num:
+            manager.bookings.remove(booking)
+    return f"Cancle booking sucsessful."
+
 
 @app.post("/add_rating" ,tags=["Cars"])
 async def add_rating(data:AddRateDTO):
