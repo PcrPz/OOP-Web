@@ -151,12 +151,6 @@ async def add_car_to_catalog(data:AddCarDTO):
     )
     return {"status":"Add Success"}
 
-# @app.post(" ")
-# async def modify_car_to_catalog(bookname, data:ModifyBookDTO):
-#     x = testalog.find_book_by_name(bookname)
-#     book.modify_car(data)
-#     return {"status":"Success"}
-
 @app.get("/search/search_car_by_brand", tags=["cars"])
 async def search_car_by_brand(name:str):
     search_car = testalog.search_car_by_brand(name)
