@@ -45,3 +45,10 @@ class AddCarDTO (BaseModel):
     car_about: str
     car_plate_number : str
     
+class Registeration(BaseModel):
+    contact_name : str
+    contact_username : str
+    contact_phone_num : str
+    contact_password : str
+    contact_email : str
+

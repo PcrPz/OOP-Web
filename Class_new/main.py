@@ -103,6 +103,11 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     user = sym.get_user(form_data.username)
     return {"access_token": user._contact_username, "token_type": "bearer"}
 
+#Register
+@app.post("/users/registeration")
+async def registeration(data:Registeration):
+    sym.add_user(Renter(data.contact_name, data.contact_username, data.contact_phone_num, data.contact_password, data.contact_email))
+    return{"status" : "Success"}
 
 @app.get("/users/me")
 async def read_users_me(current_user = Depends(sym.get_current_user)):
