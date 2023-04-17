@@ -20,6 +20,10 @@ class EditProfileDTO(BaseModel):
     new_password :str
     new_email :str
     
+class CreditCard(BaseModel):
+    exprie_card:str
+    card_number:str
+    security_credit:str    
     
 class FavouriteDTO(BaseModel):
     car : str 
@@ -41,3 +45,10 @@ class AddCarDTO (BaseModel):
     car_about: str
     car_plate_number : str
     
+class Registeration(BaseModel):
+    contact_name : str
+    contact_username : str
+    contact_phone_num : str
+    contact_password : str
+    contact_email : str
+

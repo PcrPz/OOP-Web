@@ -1,4 +1,5 @@
 from CarCatalog import CarCatalog
+from CreditCard import CreditInfo
 import datetime
 from Car import*
 class Contact:
@@ -28,11 +29,15 @@ class Owner(Contact):
 class Renter(Contact):
     def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
         super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
-        self.list_favour=[]
+        self._list_favour = []
+        self._credit_card = None
+        self._list_history = []
+        self._booking = None
+
     def add_fav_car(self,car):
-        self.list_favour.append(car)
+        self._list_favour.append(car)
     def watch_fav_car(self):
-        for car in self.list_favour:
+        for car in self._list_favour:
             print(car.get_car_brand())
             print(car.get_car_model())
             print(car.get_car_date_not_avalible())
@@ -48,7 +53,11 @@ class Renter(Contact):
             self._contact_password = new_password
         if isinstance(new_email, str):
             self._contact_email = new_email
-            
+    
+    #credit methods
+    def add_credit_info(self, creditInfo:CreditInfo):
+        self._credit_card = creditInfo
+ 
             
 petch = Renter("petch",
                "petchza555",

@@ -4,12 +4,12 @@ from fastapi import FastAPI
 from dto import *
 
 from Contact import*
+from CreditCard import*
 from Interval import*
 from CarCatalog import*
 from Rating import *
-from Signup_Login import *
+
 from System import *
-from Bookingmanager import *
 app = FastAPI()
 
 bmw =Car("BMW",
@@ -72,9 +72,7 @@ future = Owner("futurenaja",
                "1234",
                "65010671@gmail.com")
 sym = System()
-user_sys = SignupLogin()
 testalog = CarCatalog()
-manager = Bookingmanager()
 testalog.add_car_to_catalog(bmw)
 testalog.add_car_to_catalog(fer)
 testalog.add_car_to_catalog(r35)
@@ -92,23 +90,24 @@ sym.add_user(petch)
 #   "start_time": "9:00",
 #   "end_date": "12-6-2018",
 #   "end_time": "9:59"
+# HOME
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
-#signup
-@app.post("/signup", tags = ["Signup_Login"])
-async def signup(user: User):
-    if user_sys.add_user(user):
-        return {"message": "Signup successful."}
-    else:
-        return {"message": "Username already taken."}
-#login
-@app.post("/login", tags = ["Signup_Login"])
-async def login(username: str, password: str):
-    if user_sys.is_valid_user(username, password):
-        return {"message": "Login successful."}
-    else:
-        return {"message": "Invalid username or password"}
+async def home():
+    return {"Future_Car"}
+#Login
+@app.post("/token")
+async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+    status_user= sym.check_user(form_data.username,form_data.password)
+    if not status_user:
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    user = sym.get_user(form_data.username)
+    return {"access_token": user._contact_username, "token_type": "bearer"}
+
+#Register
+@app.post("/users/registeration")
+async def registeration(data:Registeration):
+    sym.add_user(Renter(data.contact_name, data.contact_username, data.contact_phone_num, data.contact_password, data.contact_email))
+    return{"status" : "Success"}
 
 @app.get("/users/me")
 async def read_users_me(current_user = Depends(sym.get_current_user)):
@@ -152,12 +151,6 @@ async def add_car_to_catalog(data:AddCarDTO):
     )
     return {"status":"Add Success"}
 
-# @app.post(" ")
-# async def modify_car_to_catalog(bookname, data:ModifyBookDTO):
-#     x = testalog.find_book_by_name(bookname)
-#     book.modify_car(data)
-#     return {"status":"Success"}
-
 @app.get("/search/search_car_by_brand", tags=["cars"])
 async def search_car_by_brand(name:str):
     search_car = testalog.search_car_by_brand(name)
@@ -186,24 +179,26 @@ async def get_available_car(data: AvalibleDTO):
 
 @app.post("/book_car",tags = ["Booking"])
 async def booking_car(data: BookingDTO):
-    booking =testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time,data.booked_num)
-    manager.add_booking(booking)
+    booking =testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time)
     show_book = booking.show_booking()
     return show_book
-
-@app.post("/cancle_booking",tags = ["Booking"])
-async def cancle_booking(booked_num):
-    for booking in manager.bookings:
-        if booking.booked_num == booked_num:
-            manager.bookings.remove(booking)
-    return f"Cancle booking sucsessful."
-
 
 @app.post("/add_rating" ,tags=["Cars"])
 async def add_rating(data:AddRateDTO):
     cars=testalog.find_car_by_plate(data.car_plate)
     cars.add_rating(Rating(data.score,data.comment))
     return {"status":"Add Success"}
+
+##### CREDIT ###### E D I T I N G
+@app.post("/add_credit_info", tags=["CreditCard"])
+async def add_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
+    current_user.add_credit_info(CreditInfo(data.exprie_card,data.card_number,data.security_credit))
+    return current_user._credit_card
+
+@app.post("/edit_credit_info", tags=["CreditCard"])
+async def edit_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
+    current_user._credit_card.edit_credit_info(data.exprie_card,data.card_number,data.security_credit)
+    return current_user._credit_card
 
 #FavouriteCar
 @app.post("/add_favourite",tags = ["Favourite"])
@@ -216,7 +211,6 @@ async def add_favourite(data:FavouriteDTO,current_user= Depends(sym.get_current_
 async def watch_favourite(current_user= Depends(sym.get_current_user)):
     show_fav=current_user.watch_fav_car()
     return show_fav
-
 
 
 # @app.post("/watch ",tags = ["Favourite"])
