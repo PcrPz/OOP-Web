@@ -29,9 +29,10 @@ class Owner(Contact):
 class Renter(Contact):
     def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
         super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
-        self._list_favour=None
+        self._list_favour = []
         self._credit_card = None
-        self._list_book = []
+        self._list_history = []
+        self._booking = None
 
     def add_fav_car(self,car):
         self._list_favour.append(car)
