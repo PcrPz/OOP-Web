@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from dto import *
 
 from Contact import*
+from CreditCard import*
 from Interval import*
 from CarCatalog import*
 from Rating import *
@@ -189,6 +190,17 @@ async def add_rating(data:AddRateDTO):
     cars.add_rating(Rating(data.score,data.comment))
     return {"status":"Add Success"}
 
+##### CREDIT ###### E D I T I N G
+@app.post("/add_credit_info", tags=["CreditCard"])
+async def add_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
+    current_user.add_credit_info(CreditInfo(data.exprie_card,data.card_number,data.security_credit))
+    return current_user._credit_card
+
+@app.post("/edit_credit_info", tags=["CreditCard"])
+async def edit_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
+    current_user._credit_card.edit_credit_info(data.exprie_card,data.card_number,data.security_credit)
+    return current_user._credit_card
+
 #FavouriteCar
 @app.post("/add_favourite",tags = ["Favourite"])
 async def add_favourite(data:FavouriteDTO,current_user= Depends(sym.get_current_user)):
@@ -200,7 +212,6 @@ async def add_favourite(data:FavouriteDTO,current_user= Depends(sym.get_current_
 async def watch_favourite(current_user= Depends(sym.get_current_user)):
     show_fav=current_user.watch_fav_car()
     return show_fav
-
 
 
 # @app.post("/watch ",tags = ["Favourite"])
