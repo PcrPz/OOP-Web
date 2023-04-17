@@ -20,6 +20,10 @@ class EditProfileDTO(BaseModel):
     new_password :str
     new_email :str
     
+class CreditCard(BaseModel):
+    exprie_card:str
+    card_number:str
+    security_credit:str    
     
 class FavouriteDTO(BaseModel):
     car : str 
