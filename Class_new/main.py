@@ -10,6 +10,7 @@ from CarCatalog import*
 from Rating import *
 
 from System import *
+from Bookingmanager import *
 app = FastAPI()
 
 bmw =Car("BMW",
@@ -73,6 +74,7 @@ future = Owner("futurenaja",
                "65010671@gmail.com")
 sym = System()
 testalog = CarCatalog()
+manager = Bookingmanager()
 testalog.add_car_to_catalog(bmw)
 testalog.add_car_to_catalog(fer)
 testalog.add_car_to_catalog(r35)
@@ -182,6 +184,13 @@ async def booking_car(data: BookingDTO):
     booking =testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time)
     show_book = booking.show_booking()
     return show_book
+
+@app.post("/cancle_booking",tags = ["Booking"])
+async def cancle_booking(booked_number):
+    for book in manager.bookings:
+        if book.__booked_number == booked_number:
+            manager.bookings.remove(book)
+            return f"Cancle booking number{book.get_booked_number()}"
 
 @app.post("/add_rating" ,tags=["Cars"])
 async def add_rating(data:AddRateDTO):
