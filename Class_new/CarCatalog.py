@@ -47,7 +47,6 @@ class CarCatalog:
                 book_car = i
                 break
         interval = Interval(start_date,start_time,end_date,end_time)
-        book_car.add_interval(interval)
         booking = Booking(book_car,interval)
         return booking
     
