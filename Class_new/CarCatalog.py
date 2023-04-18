@@ -3,6 +3,7 @@ from datetime import datetime
 from Interval import Interval
 from Booking import Booking
 class CarCatalog:
+    booked_number = 0
     def __init__(self):
         self._car_lists=[]
             
@@ -47,7 +48,6 @@ class CarCatalog:
                 book_car = i
                 break
         interval = Interval(start_date,start_time,end_date,end_time)
-        book_car.add_interval(interval)
         booking = Booking(book_car,interval)
         return booking
     
@@ -56,7 +56,3 @@ class CarCatalog:
             if i.get_car_plate_number() == cars:
                 this_car = i
         return this_car
-    
-
-            
-    

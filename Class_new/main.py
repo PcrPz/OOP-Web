@@ -10,7 +10,9 @@ from CarCatalog import*
 from Rating import *
 
 from System import *
-from Bookingmanager import *
+import random
+from Payment import *
+
 app = FastAPI()
 
 bmw =Car("BMW",
@@ -74,7 +76,6 @@ future = Owner("futurenaja",
                "65010671@gmail.com")
 sym = System()
 testalog = CarCatalog()
-manager = Bookingmanager()
 testalog.add_car_to_catalog(bmw)
 testalog.add_car_to_catalog(fer)
 testalog.add_car_to_catalog(r35)
@@ -180,17 +181,16 @@ async def get_available_car(data: AvalibleDTO):
     return list_car
 
 @app.post("/book_car",tags = ["Booking"])
-async def booking_car(data: BookingDTO):
-    booking =testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time)
-    show_book = booking.show_booking()
-    return show_book
+async def booking_car(data: BookingDTO,current_user = Depends(sym.get_current_user)):
+    current_user._booking = testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time)
+    return current_user
 
-@app.post("/cancle_booking",tags = ["Booking"])
-async def cancle_booking(booked_number):
-    for book in manager.bookings:
-        if book.__booked_number == booked_number:
-            manager.bookings.remove(book)
-            return f"Cancle booking number{book.get_booked_number()}"
+# @app.post("/cancle_booking",tags = ["Booking"])
+# async def cancle_booking(booked_number):
+#     for book in manager.bookings:
+#         if book.__booked_number == booked_number:
+#             manager.bookings.remove(book)
+#             return f"Cancle booking number{book.get_booked_number()}"
 
 @app.post("/add_rating" ,tags=["Cars"])
 async def add_rating(data:AddRateDTO):
@@ -201,7 +201,7 @@ async def add_rating(data:AddRateDTO):
 ##### CREDIT ###### E D I T I N G
 @app.post("/add_credit_info", tags=["CreditCard"])
 async def add_credit_info(data:CreditCardDTO,current_user= Depends(sym.get_current_user)):
-    current_user.add_credit_info(CreditInfo(data.exprie_card,data.card_number,data.security_credit))
+    current_user.add_credit_info(CreditInfo(data.expire_card,data.card_number,data.security_credit))
     return current_user._credit_card
 
 @app.post("/edit_credit_info", tags=["CreditCard"])
@@ -209,9 +209,17 @@ async def edit_credit_info(data:CreditCardDTO,current_user= Depends(sym.get_curr
     current_user._credit_card.edit_credit_info(data.exprie_card,data.card_number,data.security_credit)
     return current_user._credit_card
 
-@app.post("/Payment",tags =["Payment"])
-async def make_payment(current_user = Depends(sym.get_current_user)):
-    current_user
+@app.get("/get_payment",tags =["Payment"])
+async def get_payment(current_user = Depends(sym.get_current_user)):
+    status = False
+    transaction_id = random.randint(100000000,999999999)
+    rental_price = current_user._booking.get_price()
+    credit_info = current_user._credit_card
+    payment = Payment(rental_price,status,transaction_id,credit_info)
+    return payment
+
+# @app.post("/Payment",tags = ["Payment"])
+# async def make_payment(current_user = Depends(sym.get_current_user))
 
 #FavouriteCar
 @app.post("/add_favourite",tags = ["Favourite"])
