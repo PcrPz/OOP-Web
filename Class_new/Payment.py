@@ -2,17 +2,21 @@ from datetime import datetime
 import datetime
 from abc import ABC , abstractmethod
 from Booking import *
+from CreditCard import *
 import random
+from Contact import Renter
 
 class Payment:
-    def __init__(self):
-        pass
-
-    def process_payment(self,booking):
-        # self.__payment_method_object = self.__payment_method
-        # self.__amount = booking.rental_price()
-        # self.__payment_method_object.process_payment(self.__amount)
-        pass
+    def __init__(self,amount, payment_method, payment_time):
+        self.__amount = amount
+        self.__payment_method = payment_method
+        self.__payment_time = payment_time
+        self.__transaction_id = None
+        self.__payment_method_object = None
+        
+    def process_payment(self):
+        self.__payment_method_object = self.__payment_method
+        self.__payment_method_object.process_payment(self.__amount)
 
 class PaymentMethod(ABC):
     @abstractmethod
@@ -21,7 +25,7 @@ class PaymentMethod(ABC):
 
 class BankTransfer(PaymentMethod):
     bankaccounts = []
-    def __init__(self, bank_name, bank_account_number,balance):
+    def __init__(self,renter:Renter, bank_name, bank_account_number,balance):
         self.__bank_name = bank_name
         self.__bank_account_number = bank_account_number
         self.__balance = balance
@@ -33,8 +37,8 @@ class BankTransfer(PaymentMethod):
     def get_bank_name(self):
         return self.__bank_name
     
-    def add_account(self,account):
-        self.bankaccounts.append(account)
+    def add_account(self,renter):
+        self.bankaccounts.append(renter)
 
     def set_balance(self,amount):
         self.__balance = amount

@@ -107,7 +107,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 
 #Register
 @app.post("/users/registeration")
-async def registeration(data:Registeration):
+async def registeration(data:RegistrationDTO):
     sym.add_user(Renter(data.contact_name, data.contact_username, data.contact_phone_num, data.contact_password, data.contact_email))
     return{"status" : "Success"}
 
@@ -200,14 +200,18 @@ async def add_rating(data:AddRateDTO):
 
 ##### CREDIT ###### E D I T I N G
 @app.post("/add_credit_info", tags=["CreditCard"])
-async def add_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
+async def add_credit_info(data:CreditCardDTO,current_user= Depends(sym.get_current_user)):
     current_user.add_credit_info(CreditInfo(data.exprie_card,data.card_number,data.security_credit))
     return current_user._credit_card
 
 @app.post("/edit_credit_info", tags=["CreditCard"])
-async def edit_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
+async def edit_credit_info(data:CreditCardDTO,current_user= Depends(sym.get_current_user)):
     current_user._credit_card.edit_credit_info(data.exprie_card,data.card_number,data.security_credit)
     return current_user._credit_card
+
+@app.post("/Payment",tags =["Payment"])
+async def make_payment(current_user = Depends(sym.get_current_user)):
+    current_user
 
 #FavouriteCar
 @app.post("/add_favourite",tags = ["Favourite"])
