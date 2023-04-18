@@ -60,6 +60,54 @@ Nismo = Car("Nismo",
           "car_about",
           "ABZW-333")
 
+moto = Car("Audi",
+          "R8",
+          "Engine",
+          "200km",
+          "200CC",
+          "2Door",
+          "3year",
+          "2seat",
+          100,
+          "car_about",
+          "CVZ-786")
+
+kop = Car("BMW",
+          "M5",
+          "Engine",
+          "200km",
+          "200CC",
+          "2Door",
+          "3year",
+          "2seat",
+          100,
+          "car_about",
+          "DASD-786")
+
+op = Car("BMW",
+          "M5",
+          "Engine",
+          "200km",
+          "200CC",
+          "2Door",
+          "3year",
+          "2seat",
+          100,
+          "car_about",
+          "SNIS-645")
+
+car7 = Car("Pk",
+          "Hua",
+          "Engine",
+          "200km",
+          "200CC",
+          "2Door",
+          "3year",
+          "2seat",
+          100,
+          "car_about",
+          "SNIS-645")
+
 petch = Renter("petch",
                "petch",
                "0930036621",
@@ -76,6 +124,10 @@ testalog = CarCatalog()
 testalog.add_car_to_catalog(bmw)
 testalog.add_car_to_catalog(fer)
 testalog.add_car_to_catalog(r35)
+testalog.add_car_to_catalog(moto)
+testalog.add_car_to_catalog(kop)
+testalog.add_car_to_catalog(op)
+testalog.add_car_to_catalog(car7)
 bmw.add_interval(Interval("1-6-2018","9:00","10-6-2018","10:00"))
 fer.add_interval(Interval("5-6-2018","9:00","10-6-2018","10:00"))
 #function  หารถคันนั้น
@@ -106,7 +158,11 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 #Register
 @app.post("/users/registeration")
 async def registeration(data:Registeration):
-    sym.add_user(Renter(data.contact_name, data.contact_username, data.contact_phone_num, data.contact_password, data.contact_email))
+    sym.add_user(Renter(data.contact_name,
+                        data.contact_username, 
+                        data.contact_phone_num, 
+                        data.contact_password, 
+                        data.contact_email))
     return{"status" : "Success"}
 
 @app.get("/users/me")
@@ -178,10 +234,9 @@ async def get_available_car(data: AvalibleDTO):
     return list_car
 
 @app.post("/book_car",tags = ["Booking"])
-async def booking_car(data: BookingDTO):
-    booking =testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time)
-    show_book = booking.show_booking()
-    return show_book
+async def booking_car(data: BookingDTO,current_user = Depends(sym.get_current_user)):
+    current_user._booking =testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time)
+    return current_user._booking
 
 @app.post("/add_rating" ,tags=["Cars"])
 async def add_rating(data:AddRateDTO):
@@ -211,6 +266,15 @@ async def add_favourite(data:FavouriteDTO,current_user= Depends(sym.get_current_
 async def watch_favourite(current_user= Depends(sym.get_current_user)):
     show_fav=current_user.watch_fav_car()
     return show_fav
+
+@app.get("/Payment",tags =["Payment"])
+async def make_payment(current_user = Depends(sym.get_current_user)):
+    status = False
+    transaction_id = random.randint(100000000,999999999)
+    rental_price = current_user._booking.get_price()
+    credit_info = current_user._credit_card
+    payment = Payment(rental_price,status,transaction_id,credit_info)
+    return payment
 
 
 # @app.post("/watch ",tags = ["Favourite"])
