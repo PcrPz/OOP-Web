@@ -109,8 +109,20 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 #Register
 @app.post("/users/registeration")
 async def registeration(data:RegistrationDTO):
-    sym.add_user(Renter(data.contact_name, data.contact_username, data.contact_phone_num, data.contact_password, data.contact_email))
-    return{"status" : "Success"}
+    if data.contact_type == "Owner":
+        sym.add_user(Owner(data.contact_name,
+                        data.contact_username, 
+                        data.contact_phone_num, 
+                        data.contact_password, 
+                        data.contact_email))
+        return {"message": "Register Succe"}
+    elif data.contact_type == "Renter":
+        sym.add_user(Renter(data.contact_name,
+                        data.contact_username, 
+                        data.contact_phone_num, 
+                        data.contact_password, 
+                        data.contact_email))
+        return {"message": "Register Success"}
 
 @app.get("/users/me")
 async def read_users_me(current_user = Depends(sym.get_current_user)):
@@ -218,8 +230,14 @@ async def get_payment(current_user = Depends(sym.get_current_user)):
     payment = Payment(rental_price,status,transaction_id,credit_info)
     return payment
 
+# @app.post("/topup",tags = ["Payment"])
+# async def topup(card_number,current_user = Depends(sym.get_current_user)):
+
+    
+
 # @app.post("/Payment",tags = ["Payment"])
-# async def make_payment(current_user = Depends(sym.get_current_user))
+# async def make_payment(current_user = Depends(sym.get_current_user)):
+    
 
 #FavouriteCar
 @app.post("/add_favourite",tags = ["Favourite"])
@@ -227,6 +245,7 @@ async def add_favourite(data:FavouriteDTO,current_user= Depends(sym.get_current_
     car_fav =testalog.search_car_by_brand(data.car)
     current_user.add_fav_car(car_fav)
     return {"status":"Success"}
+
 #เเก้
 @app.post("/watch_favourite",tags = ["Favourite"])
 async def watch_favourite(current_user= Depends(sym.get_current_user)):

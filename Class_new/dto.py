@@ -57,7 +57,9 @@ class CreditCardDTO(BaseModel):
 class RegistrationDTO(BaseModel):
     contact_name : str
     contact_username : str
-    contact_phone : str
+    contact_phone_num : str
     contact_password : str
     contact_email : str
+    contact_type : str
+
     
