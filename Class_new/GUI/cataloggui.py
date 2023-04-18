@@ -16,9 +16,9 @@ class CarCatalogTK:
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__text_font = Font(family="Kanit", weight="normal", size=12) 
         self.token = token
-        r = requests.get('http://127.0.0.1:8000/users/me',headers={'Authorization': "Bearer "+self.token})
-        self.user = json.loads(r.text)
-        print(self.user["_contact_name"])
+        # r = requests.get('http://127.0.0.1:8000/users/me',headers={'Authorization': "Bearer "+self.token})
+        # self.user = json.loads(r.text)
+        # print(self.user["_contact_name"])
         
         #setting 
         self.__car_catalog.title("CarCatalog")

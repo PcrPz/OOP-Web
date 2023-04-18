@@ -5,6 +5,7 @@ import tkinter.messagebox
 import requests
 import json
 from cataloggui import CarCatalogTK
+from registertk import RegisterGUI
 
 class LoginGUI:
     def __init__(self):
@@ -52,5 +53,7 @@ class LoginGUI:
             tkinter.messagebox.showerror(title="Error", message="กินปลาเยอะๆนะไม่ค่อยฉลาด")
             
     def register(self):
-        pass
+        self.__login.destroy()
+        RegisterGUI()
+        
 LoginGUI()

@@ -14,9 +14,10 @@ class RegisterGUI:
         self.__register.resizable(width=False, height=False)
         #interface
         Label(text="Register", font=self.__title_font).pack()
+        
         self.__register.mainloop()
         
         
 
-RegisterGUI()
+
     

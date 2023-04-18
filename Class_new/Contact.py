@@ -38,10 +38,10 @@ class Renter(Contact):
     def add_fav_car(self,car):
         self._list_favour.append(car)
     def watch_fav_car(self):
-        for car in self._list_favour:
-            print(car.get_car_brand())
-            print(car.get_car_model())
-            print(car.get_car_date_not_avalible())
+        return {"FavouriteCar":[{"brand":car.get_car_brand(),
+                        "model":car.get_car_model(),
+                        "price":car.get_car_amount(),}
+                       for car in self._list_favour]}
             #โชว์ค่า fav car ออกมา
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):

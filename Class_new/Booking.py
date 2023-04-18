@@ -1,5 +1,4 @@
 import datetime
-from Favourite import FavouriteCar
 from Interval import Interval
 from Car import Car
 class Booking:

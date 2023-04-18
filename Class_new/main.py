@@ -2,13 +2,13 @@ from Car import *
 from datetime import *
 from fastapi import FastAPI
 from dto import *
-
+import random
 from Contact import*
 from CreditCard import*
 from Interval import*
 from CarCatalog import*
 from Rating import *
-
+from Payment import *
 from System import *
 app = FastAPI()
 
@@ -94,7 +94,7 @@ op = Car("BMW",
           "2seat",
           100,
           "car_about",
-          "SNIS-645")
+          "SNIS-642")
 
 car7 = Car("Pk",
           "Hua",
@@ -106,7 +106,7 @@ car7 = Car("Pk",
           "2seat",
           100,
           "car_about",
-          "SNIS-645")
+          "SSIS-641")
 
 petch = Renter("petch",
                "petch",
@@ -158,12 +158,21 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 #Register
 @app.post("/users/registeration")
 async def registeration(data:Registeration):
-    sym.add_user(Renter(data.contact_name,
+    if data.contact_type == "Owner":
+        sym.add_user(Owner(data.contact_name,
                         data.contact_username, 
                         data.contact_phone_num, 
                         data.contact_password, 
                         data.contact_email))
-    return{"status" : "Success"}
+        return {"message": "Register Success"}
+    elif data.contact_type == "Renter":
+        sym.add_user(Renter(data.contact_name,
+                        data.contact_username, 
+                        data.contact_phone_num, 
+                        data.contact_password, 
+                        data.contact_email))
+        return {"message": "Register Success"}
+
 
 @app.get("/users/me")
 async def read_users_me(current_user = Depends(sym.get_current_user)):
@@ -258,14 +267,13 @@ async def edit_credit_info(data:CreditCard,current_user= Depends(sym.get_current
 #FavouriteCar
 @app.post("/add_favourite",tags = ["Favourite"])
 async def add_favourite(data:FavouriteDTO,current_user= Depends(sym.get_current_user)):
-    car_fav =testalog.search_car_by_brand(data.car)
+    car_fav = testalog.find_car_by_plate(data.car)
     current_user.add_fav_car(car_fav)
     return {"status":"Success"}
 #เเก้
 @app.post("/watch_favourite",tags = ["Favourite"])
 async def watch_favourite(current_user= Depends(sym.get_current_user)):
-    show_fav=current_user.watch_fav_car()
-    return show_fav
+    return current_user.watch_fav_car()
 
 @app.get("/Payment",tags =["Payment"])
 async def make_payment(current_user = Depends(sym.get_current_user)):
