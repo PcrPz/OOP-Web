@@ -156,7 +156,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     return {"access_token": user._contact_username, "token_type": "bearer"}
 
 #Register
-@app.post("/users/registeration")
+@app.post("/registeration")
 async def registeration(data:Registeration):
     if data.contact_type == "Owner":
         sym.add_user(Owner(data.contact_name,

@@ -5,7 +5,7 @@ import tkinter.messagebox
 import requests
 import json
 from cataloggui import CarCatalogTK
-from registertk import RegisterGUI
+
 
 class LoginGUI:
     def __init__(self):
@@ -16,7 +16,7 @@ class LoginGUI:
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
         self.__login.title("Login")
-        self.__login.geometry("350x350")
+        self.__login.geometry("350x200")
         self.__login.resizable(width=False, height=False)
         Label(text="Login", font=self.__header_font).pack(anchor="center")
         Label(text="Username:", font=self.__normal_font).place(x=25, y=50)
@@ -26,8 +26,6 @@ class LoginGUI:
         self.__pwd_entry = Entry(self.__login, font=self.__txtbox_font, show="*")
         self.__pwd_entry.place(x=130, y=80)
         Button(text="Login", font=self.__normal_font, command=self.login).place(x=140, y=120)
-        Label(text="if u dont have account", font=self.__normal_font).place(x=10, y=200)
-        Button(text="Register", font=self.__normal_font, command=self.register).place(x=240, y=180)
         self.__login.mainloop()
         
         
@@ -44,16 +42,12 @@ class LoginGUI:
             if r.status_code == 200 :
                 self.token = data["access_token"]
                 if self.token == '':
-                    tkinter.messagebox.showerror(title="Error", message="ถ้าฉลาดก็จะรู้เองว่าผิดตรงไหน")
+                    tkinter.messagebox.showerror(title="Error", message="Not Correct!!!!")
                 else:
                     tkinter.messagebox.showinfo(title="Success", message="Correct!! Welcome To My Shop")
                     self.__login.destroy()
                     CarCatalogTK(self.token)
         else:
-            tkinter.messagebox.showerror(title="Error", message="กินปลาเยอะๆนะไม่ค่อยฉลาด")
-            
-    def register(self):
-        self.__login.destroy()
-        RegisterGUI()
+            tkinter.messagebox.showerror(title="Error", message="Please Enter Username And Password")
+
         
-LoginGUI()

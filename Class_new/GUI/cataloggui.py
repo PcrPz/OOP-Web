@@ -16,9 +16,9 @@ class CarCatalogTK:
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__text_font = Font(family="Kanit", weight="normal", size=12) 
         self.token = token
-        # r = requests.get('http://127.0.0.1:8000/users/me',headers={'Authorization': "Bearer "+self.token})
-        # self.user = json.loads(r.text)
-        # print(self.user["_contact_name"])
+        r = requests.get('http://127.0.0.1:8000/users/me',headers={'Authorization': "Bearer "+self.token})
+        self.user = json.loads(r.text)
+        print(self.user)
         
         #setting 
         self.__car_catalog.title("CarCatalog")
@@ -29,7 +29,7 @@ class CarCatalogTK:
         self.__token = token
         self.__car_count = 0
         self.__list_car_to_show =[]
-        self.__row_base = 100
+        self.__row_base = 75
         #menu
         self.__main_menu = Menu()
         self.__hello = Menu()
@@ -43,33 +43,33 @@ class CarCatalogTK:
         
         
         #interface
-        Label(text="CarCatalog", font=self.__title_font).place(x=300 , y=50)
+        Label(text="CarCatalog", font=self.__title_font).place(x=300 , y=20)
         self.show_course()
         
         if self.__car_count % 4 == 0:   
             for i in range(0,self.__car_count,4):
                 for j in range(4):
-                    Label(text=self.__list_car_to_show[i+j]['car_brand'], font=self.__normal_font).place(x=100+150*j,y=self.__row_base)
-                    Label(text=self.__list_car_to_show[i+j]['car_model'], font=self.__normal_font).place(x=100+150*j, y=self.__row_base+30)
-                    Label(text=self.__list_car_to_show[i+j]['car_amount'], font=self.__normal_font).place(x=100+150*j, y=self.__row_base+60)
-                    Label(text=self.__list_car_to_show[i+j]['car_plate_number'], font=self.__normal_font).place(x=100+150*j, y=self.__row_base+90)
+                    Label(text='Brand :'+self.__list_car_to_show[i+j]['car_brand'], font=self.__normal_font).place(x=50+175*j,y=self.__row_base)
+                    Label(text='Model :'+self.__list_car_to_show[i+j]['car_model'], font=self.__normal_font).place(x=50+175*j, y=self.__row_base+30)
+                    Label(text='Price :'+str(self.__list_car_to_show[i+j]['car_amount']), font=self.__normal_font).place(x=50+175*j, y=self.__row_base+60)
+                    Label(text='Plate :'+self.__list_car_to_show[i+j]['car_plate_number'], font=self.__normal_font).place(x=50+175*j, y=self.__row_base+90)
                 self.__row_base +=120
 
         else: 
             num = self.__car_count%4
             for i in range(0,self.__car_count-4,4):
                 for j in range(4):
-                    Label(text=self.__list_car_to_show[i+j]['car_brand'], font=self.__normal_font).place(x=100+150*j,y=self.__row_base)
-                    Label(text=self.__list_car_to_show[i+j]['car_model'], font=self.__normal_font).place(x=100+150*j, y=self.__row_base+30)
-                    Label(text=self.__list_car_to_show[i+j]['car_amount'], font=self.__normal_font).place(x=100+150*j, y=self.__row_base+60)
-                    Label(text=self.__list_car_to_show[i+j]['car_plate_number'], font=self.__normal_font).place(x=100+150*j, y=self.__row_base+90)
+                    Label(text='Brand :'+self.__list_car_to_show[i+j]['car_brand'], font=self.__normal_font).place(x=50+175*j,y=self.__row_base)
+                    Label(text='Model :'+self.__list_car_to_show[i+j]['car_model'], font=self.__normal_font).place(x=50+175*j, y=self.__row_base+30)
+                    Label(text='Price :'+str(self.__list_car_to_show[i+j]['car_amount']), font=self.__normal_font).place(x=50+175*j, y=self.__row_base+60)
+                    Label(text='Plate :'+self.__list_car_to_show[i+j]['car_plate_number'], font=self.__normal_font).place(x=50+175*j, y=self.__row_base+90)
                 self.__row_base +=120
             
             for k in range(num):
-                    Label(text=self.__list_car_to_show[i+j+k+1]['car_brand'], font=self.__normal_font).place(x=100+150*k,y=self.__row_base)
-                    Label(text=self.__list_car_to_show[i+j+k+1]['car_model'], font=self.__normal_font).place(x=100+150*k, y=self.__row_base+30)
-                    Label(text=self.__list_car_to_show[i+j+k+1]['car_amount'], font=self.__normal_font).place(x=100+150*k, y=self.__row_base+60)
-                    Label(text=self.__list_car_to_show[i+j+k+1]['car_plate_number'], font=self.__normal_font).place(x=100+150*k, y=self.__row_base+90)
+                    Label(text='Brand :'+self.__list_car_to_show[i+j+k+1]['car_brand'], font=self.__normal_font).place(x=50+175*k,y=self.__row_base)
+                    Label(text='Model :'+self.__list_car_to_show[i+j+k+1]['car_model'], font=self.__normal_font).place(x=50+175*k, y=self.__row_base+30)
+                    Label(text='Price :'+str(self.__list_car_to_show[i+j+k+1]['car_amount']), font=self.__normal_font).place(x=50+175*k, y=self.__row_base+60)
+                    Label(text='Plate :'+self.__list_car_to_show[i+j+k+1]['car_plate_number'], font=self.__normal_font).place(x=50+175*k, y=self.__row_base+90)
             
             
         
