@@ -115,7 +115,7 @@ async def registeration(data:RegistrationDTO):
                         data.contact_phone_num, 
                         data.contact_password, 
                         data.contact_email))
-        return {"message": "Register Succe"}
+        return {"message": "Register Success"}
     elif data.contact_type == "Renter":
         sym.add_user(Renter(data.contact_name,
                         data.contact_username, 
@@ -195,14 +195,24 @@ async def get_available_car(data: AvalibleDTO):
 @app.post("/book_car",tags = ["Booking"])
 async def booking_car(data: BookingDTO,current_user = Depends(sym.get_current_user)):
     current_user._booking = testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time)
+    current_user._booking_available = True
     return current_user
 
-# @app.post("/cancle_booking",tags = ["Booking"])
-# async def cancle_booking(booked_number):
-#     for book in manager.bookings:
-#         if book.__booked_number == booked_number:
-#             manager.bookings.remove(book)
-#             return f"Cancle booking number{book.get_booked_number()}"
+@app.delete("/cancel_booking", tags=["Booking"])
+async def cancel_booking(current_user=Depends(sym.get_current_user)):
+    if current_user._booking_available:
+        del current_user._booking
+        current_user._booking_available = False
+        return "Cancel booking success"
+    else:
+        return "No booking available"
+
+@app.get("/view_booking",tags=["Booking"])
+async def view_booking(current_user = Depends(sym.get_current_user)):
+    if current_user._booking_available == True:
+        return current_user._booking
+    else:
+        return "No booking available"
 
 @app.post("/add_rating" ,tags=["Cars"])
 async def add_rating(data:AddRateDTO):
@@ -227,16 +237,24 @@ async def get_payment(current_user = Depends(sym.get_current_user)):
     transaction_id = random.randint(100000000,999999999)
     rental_price = current_user._booking.get_price()
     credit_info = current_user._credit_card
-    payment = Payment(rental_price,status,transaction_id,credit_info)
-    return payment
+    current_user._payment = Payment(rental_price,status,transaction_id,credit_info)
+    return current_user._payment
 
-# @app.post("/topup",tags = ["Payment"])
-# async def topup(card_number,current_user = Depends(sym.get_current_user)):
-
+@app.post("/Payment",tags = ["Payment"])
+async def make_payment(balance : int,current_user = Depends(sym.get_current_user)):
+    if current_user._payment_status == False:
+        if current_user._booking.get_price() > balance:
+            return "Insufficient balance"
+        elif balance > current_user._booking.get_price():
+            balance -= current_user._booking.get_price()
+            current_user._payment_status == True
+            return f"Payment sucsess. Balance left : {balance}"
+        else:
+            current_user._payment_status == True
+            return "Payment sucsess"
+    else:
+        "Payment already done"
     
-
-# @app.post("/Payment",tags = ["Payment"])
-# async def make_payment(current_user = Depends(sym.get_current_user)):
     
 
 #FavouriteCar
