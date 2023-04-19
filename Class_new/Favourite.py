@@ -1,2 +1,0 @@
-class FavouriteCar:
-    pass

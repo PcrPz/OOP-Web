@@ -1,5 +1,4 @@
 import datetime
-from Favourite import FavouriteCar
 from Interval import Interval
 from Car import Car
 class Booking:
@@ -8,6 +7,9 @@ class Booking:
         self.__day_start = self.__day_range.get_end_time()
         self.__day_end = self.__day_range.get_start_time()
         self.__price = car.get_car_amount() *(self.__day_start - self.__day_end).days
+    
+    def get_price (self):
+        return self.__price
         
  #เเก้คิดเงินหน่อยค้าบ
     def show_booking(self):
