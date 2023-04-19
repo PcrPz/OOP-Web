@@ -3,16 +3,17 @@ from CreditCard import CreditInfo
 import datetime
 from Car import*
 class Contact:
-    def __init__(self,contact_name,contact_username,contact_phone_num,contact_password,contact_email):
+    def __init__(self,contact_name,contact_username,contact_phone_num,contact_password,contact_email,contact_type):
         self._contact_name= contact_name
         self._contact_username = contact_username
         self._contact_phone_num = contact_phone_num
         self._contact_password = contact_password
         self._contact_email = contact_email
+        self._contact_type = contact_type
         
 class Owner(Contact):
-    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
-        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)          
+    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email,contact_type = "Owner"):
+        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email,contact_type)          
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):
             self._contact_name = new_name
@@ -27,8 +28,8 @@ class Owner(Contact):
         
         
 class Renter(Contact):
-    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
-        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
+    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email,contact_type = "Renter"):
+        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email,contact_type)
         self._list_favour = []
         self._credit_card = None
         self._list_history = []

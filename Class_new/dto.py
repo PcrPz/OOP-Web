@@ -51,4 +51,5 @@ class Registeration(BaseModel):
     contact_phone_num : str
     contact_password : str
     contact_email : str
+    contact_type : str
 

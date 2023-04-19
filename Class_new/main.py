@@ -106,8 +106,20 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 #Register
 @app.post("/users/registeration")
 async def registeration(data:Registeration):
-    sym.add_user(Renter(data.contact_name, data.contact_username, data.contact_phone_num, data.contact_password, data.contact_email))
-    return{"status" : "Success"}
+    if data.contact_type == "Owner":
+        sym.add_user(Owner(data.contact_name,
+                        data.contact_username, 
+                        data.contact_phone_num, 
+                        data.contact_password, 
+                        data.contact_email))
+        return {"message": "Register Success"}
+    elif data.contact_type == "Renter":
+        sym.add_user(Renter(data.contact_name,
+                        data.contact_username, 
+                        data.contact_phone_num, 
+                        data.contact_password, 
+                        data.contact_email))
+        return {"message": "Register Success"}
 
 @app.get("/users/me")
 async def read_users_me(current_user = Depends(sym.get_current_user)):
