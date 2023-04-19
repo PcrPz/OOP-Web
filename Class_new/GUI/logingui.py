@@ -24,7 +24,6 @@ class LoginGUI:
         Button(text="Login", font=self.__normal_font, command=self.login).place(x=110, y=120)
         self.__login.mainloop()
         
-   
     def login(self):
         if self.__username_entry.get() != "" and self.__pwd_entry.get() != "":
             url = "http://127.0.0.1:8000/token"
@@ -44,4 +43,4 @@ class LoginGUI:
                 # CarCatalog(data['username'])
         else:
             tkinter.messagebox.showerror(title="Error", message="กินปลาเยอะๆนะไม่ค่อยฉลาด")
-LoginGUI()
+LoginGUI

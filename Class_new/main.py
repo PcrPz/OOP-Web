@@ -254,8 +254,7 @@ async def make_payment(balance : int,current_user = Depends(sym.get_current_user
             return "Payment sucsess"
     else:
         "Payment already done"
-    
-    
+
 
 #FavouriteCar
 @app.post("/add_favourite",tags = ["Favourite"])
