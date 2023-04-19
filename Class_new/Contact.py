@@ -12,8 +12,8 @@ class Contact:
         self._contact_type = contact_type
         
 class Owner(Contact):
-    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email,contact_type = "Owner"):
-        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email,contact_type)          
+    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
+        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)          
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):
             self._contact_name = new_name
@@ -28,8 +28,8 @@ class Owner(Contact):
         
         
 class Renter(Contact):
-    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email,contact_type = "Renter"):
-        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email,contact_type)
+    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
+        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
         self._list_favour = []
         self._credit_card = None
         self._list_history = []
@@ -38,10 +38,10 @@ class Renter(Contact):
     def add_fav_car(self,car):
         self._list_favour.append(car)
     def watch_fav_car(self):
-        for car in self._list_favour:
-            print(car.get_car_brand())
-            print(car.get_car_model())
-            print(car.get_car_date_not_avalible())
+        return {"FavouriteCar":[{"brand":car.get_car_brand(),
+                        "model":car.get_car_model(),
+                        "price":car.get_car_amount(),}
+                       for car in self._list_favour]}
             #โชว์ค่า fav car ออกมา
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):
