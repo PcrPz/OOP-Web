@@ -5,7 +5,7 @@ from tkinter import ttk
 import tkinter.messagebox
 import requests
 import json
-from logingui import LoginGUI
+from Gui_login import LoginGUI
 
 
 class RegisterGUI:

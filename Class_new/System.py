@@ -3,6 +3,7 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 from Contact import Contact 
+from Payment import *
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -24,13 +25,13 @@ class System:
 
     def get_user(self,username: str):
         for user in self.__list_user:
-            if user._contact_username == username:
+            if user.get_username() == username:
                 return user
         
     def check_user (self,username,password):
         for user in self.__list_user:
-            if user._contact_username == username:
-                if user._contact_password == password:
+            if user.get_username() == username:
+                if user.get_password()== password:
                     return True
         return False
 
@@ -46,11 +47,16 @@ class System:
         user = self.fake_decode_token(token)
         if not user:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid authentication credentials",
-                headers={"WWW-Authenticate": "Bearer"},
+                status_code = status.HTTP_401_UNAUTHORIZED,
+                detail = "Invalid authentication credentials",
+                headers = {"WWW-Authenticate": "Bearer"},
             )
         return user
+    
+    def make_payment(self,payment:Payment):
+        status = payment.make_payment()
+        del payment
+        return status
     
     
 
