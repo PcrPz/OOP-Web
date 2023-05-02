@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from dto import *
 import random
 from Contact import*
-from CreditCard import*
+from CreditInfo import*
 from Interval import*
 from CarCatalog import*
 from Rating import *
@@ -109,7 +109,7 @@ car7 = Car("Pk",
           "SSIS-641")
 
 petch = Renter("petch",
-               "petch",
+               "petch1",
                "0930036621",
                "5678",
                "petchza@gmail.com")
@@ -134,9 +134,6 @@ fer.add_interval(Interval("5-6-2018","9:00","10-6-2018","10:00"))
 sym.add_user(future)
 sym.add_user(petch)
 
-#function หาuser
-
-
 #         "car": "ABZW-999",
 #   "start_date": "11-6-2018",
 #   "start_time": "9:00",
@@ -146,6 +143,7 @@ sym.add_user(petch)
 @app.get("/")
 async def home():
     return {"Future_Car"}
+#เคลีย GUI
 #Login
 @app.post("/token")
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
@@ -153,8 +151,9 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     if not status_user:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     user = sym.get_user(form_data.username)
-    return {"access_token": user._contact_username, "token_type": "bearer"}
+    return {"access_token": user.get_username(), "token_type": "bearer"}
 
+#เคลีย GUI
 #Register
 @app.post("/registeration")
 async def registeration(data:Registeration):
@@ -173,21 +172,21 @@ async def registeration(data:Registeration):
                         data.contact_email))
         return {"message": "Register Success"}
 
-
+#เคลีย GUI
+#View Profile
 @app.get("/users/me")
 async def read_users_me(current_user = Depends(sym.get_current_user)):
     return current_user
 
 #Modify Contact
-@app.post("/users/me/modify")
+#เคลีย GUI
+@app.put("/users/me/modify")
 async def edit_profile(data:EditProfileDTO,current_user= Depends(sym.get_current_user)):
-    current_user.edit_profile(data.new_name,
-    data.new_username ,
-    data.new_phone_num ,
-    data.new_password ,
-    data.new_email )
+    current_user.edit_profile(data.new_phone_num ,data.new_password , data.new_email )
     return {"status":"Success"}
+
 #Cars
+#เคลีย GUI
 @app.get("/cars", tags=["Catalog"])
 async def home():
     return {"catalog":[{"car_brand": x.get_car_brand(),
@@ -196,6 +195,8 @@ async def home():
                         "car_plate_number": x.get_car_plate_number(),
                         "car_rating": x.get_rating_score()}
                        for x in testalog._car_lists]}
+    
+
 
 #Add_book
 @app.post("/add_car", tags=["Cars"])
@@ -241,11 +242,11 @@ async def search_car_by_model(name:str):
 async def get_available_car(data: AvalibleDTO):
     list_car = testalog.find_available_car(data.start_date,data.start_time,data.end_date,data.end_time)
     return list_car
-
+#เเก้เเล้ว
 @app.post("/book_car",tags = ["Booking"])
 async def booking_car(data: BookingDTO,current_user = Depends(sym.get_current_user)):
-    current_user._booking =testalog.book_car(data.car,data.start_date,data.start_time,data.end_date,data.end_time)
-    return current_user._booking
+    current_user.set_booking(testalog.book_car(data.car_plate,data.start_date,data.start_time,data.end_date,data.end_time))#setter
+    return current_user.get_booking()
 
 @app.post("/add_rating" ,tags=["Cars"])
 async def add_rating(data:AddRateDTO):
@@ -253,36 +254,48 @@ async def add_rating(data:AddRateDTO):
     cars.add_rating(Rating(data.score,data.comment))
     return {"status":"Add Success"}
 
-##### CREDIT ###### E D I T I N G
-@app.post("/add_credit_info", tags=["CreditCard"])
-async def add_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
-    current_user.add_credit_info(CreditInfo(data.exprie_card,data.card_number,data.security_credit))
-    return current_user._credit_card
-
-@app.post("/edit_credit_info", tags=["CreditCard"])
-async def edit_credit_info(data:CreditCard,current_user= Depends(sym.get_current_user)):
-    current_user._credit_card.edit_credit_info(data.exprie_card,data.card_number,data.security_credit)
-    return current_user._credit_card
-
 #FavouriteCar
+#เเก้
 @app.post("/add_favourite",tags = ["Favourite"])
 async def add_favourite(data:FavouriteDTO,current_user= Depends(sym.get_current_user)):
-    car_fav = testalog.find_car_by_plate(data.car)
-    current_user.add_fav_car(car_fav)
-    return {"status":"Success"}
-#เเก้
-@app.post("/watch_favourite",tags = ["Favourite"])
+    if current_user.get_type() == "Owner":
+        return {"message": "Fail"}
+    elif current_user.get_type() == "Renter":
+        car_fav = testalog.find_car_by_plate(data.car_plate)
+        current_user.add_fav_car(car_fav)
+        return {"status":"Success"}
+#เคลีย GUI
+@app.get("/watch_favourite",tags = ["Favourite"])
 async def watch_favourite(current_user= Depends(sym.get_current_user)):
     return current_user.watch_fav_car()
 
-@app.get("/Payment",tags =["Payment"])
-async def make_payment(current_user = Depends(sym.get_current_user)):
-    status = False
-    transaction_id = random.randint(100000000,999999999)
-    rental_price = current_user._booking.get_price()
-    credit_info = current_user._credit_card
-    payment = Payment(rental_price,status,transaction_id,credit_info)
-    return payment
+@app.get("/watch_history",tags = ["History"])
+async def watch_history(current_user= Depends(sym.get_current_user)):
+    return current_user.watch_fav_car()
+
+@app.post("/Payment",tags =["Payment"])
+#ไม่เก็บ
+async def make_payment(data:CreditCardDTO,current_user = Depends(sym.get_current_user)):
+    rental_price = current_user.get_booking().get_price()
+    rental_booking = current_user.get_booking()
+    credit_info = CreditInfo(data.card_number,data.exprie_card,data.security_number)
+    payment = Payment(rental_price,credit_info)
+    status = sym.make_payment(payment)
+    if status == "Payment success" :
+        current_user.get_booking().get_car().add_interval(current_user.get_booking().get_interval())
+        current_user.add_history(rental_booking)
+        current_user.set_booking(None)
+    return status
+
+@app.delete("/Cancel Booking",tags =["Booking"])
+#ไม่เก็บ
+async def cancel_booking(current_user = Depends(sym.get_current_user)):
+    current_user.cancel_booking()
+    if current_user.get_booking() == None :
+        return {"status":"Success"}
+    else:
+        return {"status":"Fail"}
+
 
 
 # @app.post("/watch ",tags = ["Favourite"])

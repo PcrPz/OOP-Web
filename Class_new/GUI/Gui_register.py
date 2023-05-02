@@ -5,7 +5,7 @@ from tkinter import ttk
 import tkinter.messagebox
 import requests
 import json
-from logingui import LoginGUI
+from Gui_login import LoginGUI
 
 
 class RegisterGUI:
@@ -69,9 +69,12 @@ class RegisterGUI:
                 "contact_type": self.__roleChoose.get(),
             }
             r = requests.post('http://127.0.0.1:8000/registeration', json=data)
-            res = json.loads(r.text)
-            print(res)
-            tkinter.messagebox.showinfo(message="Success", title="Successfully")
+            res = json.loads(r.text)["message"]
+            if res == "Register Success":
+                tkinter.messagebox.showinfo(title="Success", message="Register Success")
+                
+            else:
+                tkinter.messagebox.showinfo(title="Error", message="Register Fail")
             
             
     def login(self):
