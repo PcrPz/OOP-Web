@@ -134,9 +134,6 @@ fer.add_interval(Interval("5-6-2018","9:00","10-6-2018","10:00"))
 sym.add_user(future)
 sym.add_user(petch)
 
-#function หาuser
-
-
 #         "car": "ABZW-999",
 #   "start_date": "11-6-2018",
 #   "start_time": "9:00",
@@ -185,11 +182,9 @@ async def read_users_me(current_user = Depends(sym.get_current_user)):
 #เคลีย GUI
 @app.put("/users/me/modify")
 async def edit_profile(data:EditProfileDTO,current_user= Depends(sym.get_current_user)):
-    current_user.edit_profile(
-    data.new_phone_num ,
-    data.new_password ,
-    data.new_email )
+    current_user.edit_profile(data.new_phone_num ,data.new_password , data.new_email )
     return {"status":"Success"}
+
 #Cars
 #เคลีย GUI
 @app.get("/cars", tags=["Catalog"])
@@ -200,6 +195,8 @@ async def home():
                         "car_plate_number": x.get_car_plate_number(),
                         "car_rating": x.get_rating_score()}
                        for x in testalog._car_lists]}
+    
+
 
 #Add_book
 @app.post("/add_car", tags=["Cars"])
@@ -258,6 +255,7 @@ async def add_rating(data:AddRateDTO):
     return {"status":"Add Success"}
 
 #FavouriteCar
+#เเก้
 @app.post("/add_favourite",tags = ["Favourite"])
 async def add_favourite(data:FavouriteDTO,current_user= Depends(sym.get_current_user)):
     if current_user.get_type() == "Owner":

@@ -53,6 +53,7 @@ class Car():
             return True
         else:
             return False
+        
 
     def car_available(self, datetime1, datetime2):
         for i in self.__date_not_avalible:
