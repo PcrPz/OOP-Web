@@ -61,7 +61,13 @@ class Renter(Contact):
         return {"FavouriteCar":[{"brand":car.get_car_brand(),
                         "model":car.get_car_model(),
                         "price":car.get_car_amount(),}
-                       for car in self._list_favour]}
+                       for car in self.__list_favour]}
+        
+    def watch_history(self):
+        return {"HistoryCar":[{"brand":car.get_car_brand(),
+                        "model":car.get_car_model(),
+                        "price":car.get_car_amount(),}
+                       for car in self.__list_history]}    
             #โชว์ค่า fav car ออกมา
     def add_history(self,booking):
         self.__list_history.append(booking)

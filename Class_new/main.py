@@ -146,6 +146,7 @@ sym.add_user(petch)
 @app.get("/")
 async def home():
     return {"Future_Car"}
+#เคลีย GUI
 #Login
 @app.post("/token")
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
@@ -155,6 +156,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     user = sym.get_user(form_data.username)
     return {"access_token": user.get_username(), "token_type": "bearer"}
 
+#เคลีย GUI
 #Register
 @app.post("/registeration")
 async def registeration(data:Registeration):
@@ -173,12 +175,14 @@ async def registeration(data:Registeration):
                         data.contact_email))
         return {"message": "Register Success"}
 
-
+#เคลีย GUI
+#View Profile
 @app.get("/users/me")
 async def read_users_me(current_user = Depends(sym.get_current_user)):
     return current_user
 
 #Modify Contact
+#เคลีย GUI
 @app.put("/users/me/modify")
 async def edit_profile(data:EditProfileDTO,current_user= Depends(sym.get_current_user)):
     current_user.edit_profile(
@@ -187,6 +191,7 @@ async def edit_profile(data:EditProfileDTO,current_user= Depends(sym.get_current
     data.new_email )
     return {"status":"Success"}
 #Cars
+#เคลีย GUI
 @app.get("/cars", tags=["Catalog"])
 async def home():
     return {"catalog":[{"car_brand": x.get_car_brand(),
@@ -255,12 +260,19 @@ async def add_rating(data:AddRateDTO):
 #FavouriteCar
 @app.post("/add_favourite",tags = ["Favourite"])
 async def add_favourite(data:FavouriteDTO,current_user= Depends(sym.get_current_user)):
-    car_fav = testalog.find_car_by_plate(data.car_plate)
-    current_user.add_fav_car(car_fav)
-    return {"status":"Success"}
-
-@app.post("/watch_favourite",tags = ["Favourite"])
+    if current_user.get_type() == "Owner":
+        return {"message": "Fail"}
+    elif current_user.get_type() == "Renter":
+        car_fav = testalog.find_car_by_plate(data.car_plate)
+        current_user.add_fav_car(car_fav)
+        return {"status":"Success"}
+#เคลีย GUI
+@app.get("/watch_favourite",tags = ["Favourite"])
 async def watch_favourite(current_user= Depends(sym.get_current_user)):
+    return current_user.watch_fav_car()
+
+@app.get("/watch_history",tags = ["History"])
+async def watch_history(current_user= Depends(sym.get_current_user)):
     return current_user.watch_fav_car()
 
 @app.post("/Payment",tags =["Payment"])
