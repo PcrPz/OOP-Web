@@ -53,3 +53,6 @@ class Registeration(BaseModel):
     contact_email : str
     contact_type : str
 
+class BookHistory(BaseModel):
+    history_car_booking:str
+    history_payment: str

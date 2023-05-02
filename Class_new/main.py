@@ -284,6 +284,10 @@ async def make_payment(current_user = Depends(sym.get_current_user)):
     payment = Payment(rental_price,status,transaction_id,credit_info)
     return payment
 
+@app.post("/add_booking_history",tags = ["Booking"])
+async def add_booking(data: BookHistory, current_user= Depends(sym.get_current_user)):
+    current_user._list_history.append((data.history_car_booking,data.history_payment))
+    return {"message": "Booking added successfully!"}
 
 # @app.post("/watch ",tags = ["Favourite"])
 # async def add_favourite(data:FavouriteDTO):
