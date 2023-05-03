@@ -6,6 +6,8 @@ import tkinter.messagebox
 import requests
 import json
 from logingui import LoginGUI
+
+
 class RegisterGUI:
     def __init__(self):
         self.__register = Tk()

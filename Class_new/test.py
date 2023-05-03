@@ -67,4 +67,20 @@ bmw.add_rating(test_rating2)
 x=testalog.find_car_by_plate("ABZW-343")
 x.add_rating(Rating(10,"Good"))
 print (r35.get_rating_score())
-print(testalog.search_car_by_brand("BMW"))
+y=testalog.search_car_by_brand("bmw")
+petch.add_fav_car(y)
+print(petch.watch_fav_car())
+
+
+
+class Inter:
+    
+    def __init__(self,start_date_str,start_time_str,end_date_str,end_time_str):
+        self.__date_start = self.convert_str_to_datetime(start_date_str, start_time_str)
+        self.__date_end = self.convert_str_to_datetime(end_date_str, end_time_str)
+    
+    def convert_str_to_datetime(self, str_date, str_time):
+        return datetime.strptime(str_date + " " + str_time, '%d-%m-%Y %H:%M')
+    
+
+print(Inter("03-05-2023","9:00","16-05-2023","9:59"))

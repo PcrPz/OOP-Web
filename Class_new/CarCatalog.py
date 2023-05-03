@@ -53,8 +53,8 @@ class CarCatalog:
     def find_car_by_plate(self,cars):
         for i in self._car_lists:
             if i.get_car_plate_number() == cars:
-                this_car = i
-        return this_car
+                return i
+        
     
 
             

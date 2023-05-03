@@ -7,26 +7,24 @@ class AvalibleDTO(BaseModel):
     end_time : str
     
 class BookingDTO(BaseModel):
-    car : str
+    car_plate : str
     start_date : str
     start_time : str
     end_date : str
     end_time : str
 
 class EditProfileDTO(BaseModel):
-    new_name :str
-    new_username :str
     new_phone_num :str
     new_password :str
     new_email :str
     
-class CreditCard(BaseModel):
-    exprie_card:str
+class CreditCardDTO(BaseModel):
     card_number:str
-    security_credit:str    
+    exprie_card:str
+    security_number:str    
     
 class FavouriteDTO(BaseModel):
-    car : str 
+    car_plate : str 
     
 class AddRateDTO(BaseModel):
     score : int 
