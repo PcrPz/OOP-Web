@@ -246,7 +246,10 @@ async def get_available_car(data: AvalibleDTO):
 @app.post("/book_car",tags = ["Booking"])
 async def booking_car(data: BookingDTO,current_user = Depends(sym.get_current_user)):
     current_user.set_booking(testalog.book_car(data.car_plate,data.start_date,data.start_time,data.end_date,data.end_time))#setter
-    return current_user.get_booking()
+    if current_user.get_booking() != None:
+        return {"status": "Booking Success"}
+    else:
+        return {"status": "Fail"}
 
 @app.post("/add_rating" ,tags=["Cars"])
 async def add_rating(data:AddRateDTO):
@@ -271,7 +274,7 @@ async def watch_favourite(current_user= Depends(sym.get_current_user)):
 
 @app.get("/watch_history",tags = ["History"])
 async def watch_history(current_user= Depends(sym.get_current_user)):
-    return current_user.watch_fav_car()
+    return current_user.watch_history()
 
 @app.post("/Payment",tags =["Payment"])
 #ไม่เก็บ
@@ -285,7 +288,13 @@ async def make_payment(data:CreditCardDTO,current_user = Depends(sym.get_current
         current_user.get_booking().get_car().add_interval(current_user.get_booking().get_interval())
         current_user.add_history(rental_booking)
         current_user.set_booking(None)
-    return status
+    return {"status" : status}
+
+@app.get("/find Car",tags = ["Find Car"])
+async def find_car(plate:str):
+    car = testalog.find_car_by_plate(plate)   
+    return car
+
 
 @app.delete("/Cancel Booking",tags =["Booking"])
 #ไม่เก็บ
