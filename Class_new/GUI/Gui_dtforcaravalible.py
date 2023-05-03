@@ -5,11 +5,14 @@ import customtkinter as ctk
 import requests
 import json
 from functools import partial
+from Gui_booking import bookingGUI
 
-class Detail:
+
+
+class DetailCA:
     
     def __init__(self,plate,token):
-        self.__detail = Tk()
+        self.__detailca = Tk()
         self.__plate = plate
         self.__token =token
         
@@ -19,13 +22,14 @@ class Detail:
         self.__text_font = Font(family="Kanit", weight="normal", size=12)
         
         #setting 
-        self.__detail.title("PeakyBlindestShop")
-        self.__detail.geometry("400x400")
-        self.__detail.resizable(width=False, height=False)
+        self.__detailca.title("PeakyBlindestShop")
+        self.__detailca.geometry("400x400")
+        self.__detailca.resizable(width=False, height=False)
         self.__bgcolor = "#242424"
         self.__txtcolor = "white"
         
         Label(text="CAR PLATE : "+self.__plate, font=self.__title_font).pack()
+        
         
         r = requests.get(f'http://127.0.0.1:8000/find Car?plate={self.__plate}')
         car=json.loads(r.text)
@@ -43,14 +47,20 @@ class Detail:
         Button(text='Add Rating', font=self.__normal_font,command=self.add_rating,
                    fg='#000000', bg="#40e0d0", activebackground=self.__bgcolor,
                    activeforeground=self.__txtcolor).place(x=170,y=340)
-        
+        Button(text='Booking', font=self.__normal_font,command=self.booking,
+                   fg='#000000', bg="#40e0d0", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).place(x=300,y=340)
 
 
-        self.__detail.mainloop()
+        self.__detailca.mainloop()
         
     def add_rating(self):
-        self.__detail.destroy()
+        self.__detailca.destroy()
         AddRating(self.__plate,self.__token)
+    
+    def booking(self):
+        self.__detailca.destroy()
+        bookingGUI(self.__plate,self.__token)
         
         
     def add_favorite(self):
@@ -96,7 +106,7 @@ class AddRating:
         
     def back(self):
         self.__add_rating.destroy()
-        Detail(self.__plate,self.__token)
+        DetailCA(self.__plate,self.__token)
         
     def add_rating(self):
         print(self.value_inside.get())
@@ -113,14 +123,8 @@ class AddRating:
             tkinter.messagebox.showinfo(title="Success", message="Add Success!!!!")
         else:
             tkinter.messagebox.showerror(title="Error", message="Add Fail!!!")
-
         
         
                 
             
-        
-        
-        
-        
-        
         
