@@ -12,8 +12,8 @@ class Contact:
         self._contact_type = contact_type
         
 class Owner(Contact):
-    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
-        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)          
+    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email,contact_type = "Owner"):
+        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email, contact_type)          
     def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
         if isinstance(new_name, str):
             self._contact_name = new_name
@@ -28,8 +28,8 @@ class Owner(Contact):
         
         
 class Renter(Contact):
-    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email):
-        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email)
+    def __init__(self, contact_name, contact_username, contact_phone_num, contact_password, contact_email, contact_type = "Renter"):
+        super().__init__(contact_name, contact_username, contact_phone_num, contact_password, contact_email, contact_type)
         self._list_favour = []
         self._credit_card = None
         self._list_history = []
@@ -43,16 +43,16 @@ class Renter(Contact):
                         "price":car.get_car_amount(),}
                        for car in self._list_favour]}
             #โชว์ค่า fav car ออกมา
-    def edit_profile(self,new_name,new_username,new_phone_num,new_password,new_email):
-        if isinstance(new_name, str):
+    def edit_profile(self, new_name, new_username, new_phone_num, new_password, new_email):
+        if new_name.isalpha() and isinstance(new_name, str): #isalpha ใช้ได้
             self._contact_name = new_name
-        if isinstance(new_username, str):
+        if new_username.isalpha() and isinstance(new_username, str):
             self._contact_username = new_username
-        if isinstance(new_phone_num, str):
+        if new_phone_num.isalpha() and isinstance(new_phone_num, str):
             self._contact_phone_num = new_phone_num
-        if isinstance(new_password, str):
+        if new_password.isalpha() and isinstance(new_password, str):
             self._contact_password = new_password
-        if isinstance(new_email, str):
+        if new_email.isalpha() and isinstance(new_email, str):
             self._contact_email = new_email
     
     #credit methods

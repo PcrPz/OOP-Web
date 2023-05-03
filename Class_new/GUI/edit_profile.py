@@ -3,9 +3,14 @@ from tkinter.font import *
 import requests
 import json
 
-class edit_profile:
-    def __init__(self):
+class EditProfileGUI:
+    def __init__(self,token):
+
+
         self.__ep = Tk()
+        self.token = token
+        r = requests.get('http://127.0.0.1:8000/users/me',headers={'Authorization': "Bearer "+self.token})
+        self.user = json.loads(r.text)
         self.__header_font = Font(family="Kanit", weight="bold", size=20)
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
@@ -39,7 +44,7 @@ class edit_profile:
         self.__email_entry.place(x=130, y=170)
 
         Button(text="Confirm", font=self.__normal_font, command = self.edit_profile_V2).place(x=110, y=200)
-
+        
         self.__ep.mainloop()
 
     def edit_profile_V2(self):
@@ -51,9 +56,8 @@ class edit_profile:
                     "new_password":str(self.__password_entry.get()),
                     "new_email": str(self.__email_entry.get())
                 }
-        r = requests.post(url, json = data)
+        r = requests.post(url, json = data, headers={'Authorization': "Bearer "+self.token})
         print(json.loads(r.text))
 
-edit_profile()
-
+        
 

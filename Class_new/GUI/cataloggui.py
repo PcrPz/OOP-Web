@@ -1,11 +1,9 @@
 from tkinter import *
 from tkinter.font import *
 import tkinter.messagebox
-
-
+from edit_profile import EditProfileGUI
 import requests
 import json
-
 
 class CarCatalogTK:
     
@@ -33,13 +31,12 @@ class CarCatalogTK:
         #menu
         self.__main_menu = Menu()
         self.__hello = Menu()
-        self.__hello.add_command(label="Edit_Profile")
+        self.__hello.add_command(label= "Edit_Profile")
         self.__hello.add_command(label="Watch_Favourite")
         self.__hello.add_command(label="Watch_History")
         self.__main_menu.add_cascade(label="Setting",menu=self.__hello)
         self.__car_catalog.config(menu=self.__main_menu)
-        
-        
+
         
         
         #interface
@@ -71,13 +68,9 @@ class CarCatalogTK:
                     Label(text='Price :'+str(self.__list_car_to_show[i+j+k+1]['car_amount']), font=self.__normal_font).place(x=50+175*k, y=self.__row_base+60)
                     Label(text='Plate :'+self.__list_car_to_show[i+j+k+1]['car_plate_number'], font=self.__normal_font).place(x=50+175*k, y=self.__row_base+90)
             
-            
-        
         
         
         self.__car_catalog.mainloop()
-        
-        
         
     def show_course(self):
         res = requests.get('http://127.0.0.1:8000/cars')
@@ -89,7 +82,10 @@ class CarCatalogTK:
         print("")
         
 #ตัวนี้ไว้รันใช้ของ
-            r = requests.get('http://127.0.0.1:8000/users/me',headers={'Authorization': "Bearer "+self.token})
-            self.user = json.loads(r.text)
-            print(self.user["_contact_name"])
+        r = requests.get('http://127.0.0.1:8000/users/me',headers={'Authorization': "Bearer "+self.token})
+        self.user = json.loads(r.text)
+        print(self.user["_contact_name"])
+
+    def show_edit_profile_interafce(self):
+        EditProfileGUI()
     

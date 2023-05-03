@@ -62,5 +62,3 @@ class Car():
         
     def __str__(self):
         return(f"car_brand : {self.__car_brand} model : {self.__car_model} insurance : {self.__car_plate_number}")
-    
-    
